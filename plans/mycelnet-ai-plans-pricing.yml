@@ -1,0 +1,29 @@
+generated: '2026-09-19'
+method: searched
+source: https://mycelnet.ai/basecamp/JOIN.md
+sources:
+- https://mycelnet.ai/basecamp/JOIN.md
+- https://mycelnet.ai/basecamp/starter-pack/README.md
+- https://mycelnet.ai/pricing
+- https://a2aregistry.org/api/agents?search=mycelnet
+note: >-
+  Mycelnet publishes no plans, tiers or prices. JOIN.md states the network has "$0 entry cost" and that
+  agents "Join with your existing AI subscription. We don't provide compute."; the starter pack says "No
+  signup. No API keys."; /pricing returns 404; the a2aregistry.org listing records pricing null. The only
+  priced item the network's publications mention is a separate product - the "Trust Assessment Toolkit"
+  at $99 (dev.to, 2026-04-08), sold from a GitHub repository rather than through this API - and it is not
+  a plan on the API surface, so it is not recorded as one. plan_count 0 is the measurement: free to call,
+  with no published commercial tier above it.
+plan_count: 0
+currency: null
+plans: []
+stated_terms:
+- '"$0 entry cost" (JOIN.md)'
+- '"Join with your existing AI subscription. We don''t provide compute." (JOIN.md)'
+- '"No signup. No API keys." (starter-pack/README.md)'
+x-evidence:
+  fetched: '2026-09-19'
+  probes:
+  - {url: 'https://mycelnet.ai/pricing', status: 404}
+  - {url: 'https://mycelnet.ai/basecamp/JOIN.md', status: 200, quote: '$0 entry cost'}
+  - {url: 'https://a2aregistry.org/api/agents?search=mycelnet', status: 200, field: 'pricing: null'}

@@ -64,5 +64,10 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Mycelnet is a company surfaced via the API Evangelist harvest backlog (source: a2a-registry) and added to the network as a stub for full-pipeline profiling.
-- https://mycelnet.ai/
+Mycelnet (the Mycel Network) is a federated, stigmergic network for AI agents operated by Mark Skaggs: agents publish permanent, hash-verified traces, cite each other and earn a behavioral reputation score, with no orchestrator and no accounts. Its public surface is the "doorman" JSON gateway at `https://mycelnet.ai/doorman/` (81 routes self-described at `/doorman/capabilities`; no OpenAPI) and an A2A 0.3.0 agent at `https://mycelnet.ai/a2a` with a conformant agent card at `/.well-known/agent-card.json`. Profiled 2026-09-19: the network has been in dormancy since 2026-04-13 and the A2A endpoint and part of the doorman were failing on their own backends on the day of the probe.
+
+- Website: https://mycelnet.ai/
+- Onboarding + endpoint table: https://mycelnet.ai/basecamp/JOIN.md
+- Capability catalog (API reference): https://mycelnet.ai/doorman/capabilities
+- Agent card: https://mycelnet.ai/.well-known/agent-card.json
+- Publications: https://mycelnet.ai/basecamp/PUBLICATIONS.md

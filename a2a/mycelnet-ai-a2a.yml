@@ -1,0 +1,155 @@
+generated: '2026-09-19'
+method: probed
+source: https://mycelnet.ai/.well-known/agent-card.json
+description: >-
+  A2A Agent Card observed on mycelnet.ai, the provider's own registrable domain and the host its card
+  names as provider.url and documentationUrl. Grade is measured against the A2A 1.0.0 AgentCard object:
+  'conformant' passes every structural check, 'near-conformant' is correctly shaped but omits optional
+  fields, 'flavored' fails a hard check. Provider-published by construction - served from the provider's
+  own host; nothing here is derived or generated. The card body is saved verbatim alongside.
+card:
+  file: mycelnet-ai-agent-card.json
+  sha256: e6b7c4d3b343fd1902eb3421cba81dc86ed53a0564d1f606c2039c14ae9f2697
+  bytes: 2861
+discovery:
+  path: /.well-known/agent-card.json
+  canonical: true
+  host: mycelnet.ai
+  also_served_at:
+  - {url: 'https://mycelnet.ai/.well-known/agent.json', status: 200, note: byte-identical body at the legacy pre-0.3 path; this is the URL the provider's own JOIN.md links as "Agent Card"}
+  - {url: 'https://www.mycelnet.ai/.well-known/agent-card.json', status: 301, note: www redirects every path to the apex}
+  - {url: 'https://mycelnet.ai/doorman/card', status: 200, note: 'a SECOND, different card for the gateway service itself (name mycel-doorman, version 1.0.0, three skills ask/join/trace, no protocolVersion, no url to an A2A endpoint - it points at the REST base https://mycelnet.ai/doorman/). Saved as mycelnet-ai-doorman-card.json for reference; it is not at a well-known path and would grade flavored, so it earns no pointer. The doorman also documents GET /card/{agent} as a per-agent card, which returned 404 with a backend GitHub 401 error on 2026-09-20.'}
+  note: >-
+    Served from behind Cloudflare (server: cloudflare, cf-ray EWR) with content-type application/json,
+    content-length 2861, CORS access-control-allow-origin * and X-RateLimit-* headers (120 per 60 s
+    window). The same origin answers /a2a and /doorman/* as JSON, while every other path on the host is
+    GitHub Pages (x-github-request-id on the homepage; unknown paths return the GitHub Pages "Page not
+    found" HTML with a real 404 status), so the card is served by the provider's own Worker layer rather
+    than as a static file. Ownership is not in question: the card's provider.organization is "Mycelnet",
+    provider.url and documentationUrl are https://mycelnet.ai, the endpoint url is on the same host, and
+    a2aregistry.org lists the same wellKnownURI.
+x-evidence:
+  fetched: '2026-09-19'
+  fetched_utc: '2026-09-20T03:14:09Z'
+  url: https://mycelnet.ai/.well-known/agent-card.json
+  http_status: 200
+  content_type: application/json
+  body_parses_as: JSON object with AgentCard shape (name, url, version, protocolVersion, capabilities, skills, preferredTransport, defaultInputModes, defaultOutputModes, provider, documentationUrl, security all present)
+  path_echo_control: passed (https://mycelnet.ai/.well-known/mycelnet-negative-control-9f3a1c.json returned 404 with the GitHub Pages not-found HTML)
+  endpoint_probe:
+    url: https://mycelnet.ai/a2a
+    get: 'HTTP 200 application/json: {"jsonrpc":"2.0","service":"mycel-doorman","description":"A2A JSON-RPC endpoint. Use POST with a valid JSON-RPC request.","methods":["message/send","SendMessage","tasks/send"]}'
+    method: POST message/send (well-formed - role user, messageId, parts [{kind text}])
+    status: 200
+    result: >-
+      JSON-RPC error -32603 "Internal error: memory not available". The server accepts and validates the
+      anonymous request (params without parts returns -32602 "Message must contain parts array with at
+      least one text part"; a non-JSON body returns HTTP 400 with -32600) and fails when it reaches its
+      own memory backend. a2aregistry.org recorded the same condition on 2026-09-20 (task_conformance
+      category INTERNAL, passed false; maintainer_notes "Agent endpoint reachable but returns an A2A
+      InternalError when handling message/send. Check server-side error logs.") while reporting
+      is_healthy true, uptime 97.96% and 1,967 ms average response.
+    other_methods:
+    - {method: tasks/send, result: '-32603 Internal error: memory not available (accepted as an alias of message/send)'}
+    - {method: SendMessage, result: 'listed by the endpoint as a supported alias; not exercised'}
+    - {method: tasks/get, result: '-32601 Unknown method: tasks/get. Supported: message/send, SendMessage, tasks/send'}
+    - {method: agent/getAuthenticatedExtendedCard, result: '-32601 Unknown method'}
+    - {method: tools/list (MCP), result: '-32601 Unknown method - the endpoint is A2A only'}
+    - {method: 'POST with X-A2A-Key: invalid', result: 'same -32603 as without the header; the header is CORS-allowed but nothing documents what it does'}
+  provider_side_telemetry:
+    note: >-
+      The doorman publishes its own A2A traffic counters. GET /doorman/knocks/history?days=90 reported
+      67,837 knocks in the 90 days to 2026-09-20 (on 2026-09-20 itself 91 knocks from 4 unique IPs, 85 of
+      them agent-card fetches, 2 on the a2a-legacy path). GET /doorman/bridge/activity lists 195 logged
+      skill invocations; the 20 most recent are all search_traces on 2026-06-27 with response_status
+      "error", which is the last date the provider's own log shows a skill being called.
+  registry_listing:
+    url: https://a2aregistry.org/api/agents?search=mycelnet
+    id: f9af9482-62d5-4417-9b11-2ad27e85367e
+    created_at: '2026-03-23'
+    updated_at: '2026-09-20'
+    conformance: true
+    homepage: null
+    repository: null
+    license: null
+    pricing: null
+    contact: null
+agent_card:
+  name: Mycelnet
+  url: https://mycelnet.ai/a2a
+  version: 3.5.0
+  protocol_version: 0.3.0
+  preferred_transport: JSONRPC
+  provider:
+    organization: Mycelnet
+    url: https://mycelnet.ai
+  documentation_url: https://mycelnet.ai
+  supports_authenticated_extended_card: not declared (agent/getAuthenticatedExtendedCard returns -32601)
+  security: '[] (declared empty; no securitySchemes key; the endpoint accepts anonymous requests)'
+  capabilities:
+    streaming: false
+    push_notifications: false
+  default_input_modes: [application/json, text/plain]
+  default_output_modes: [application/json]
+  skill_count: 5
+  skills:
+  - id: search_traces
+    name: Search Collective Knowledge
+    tags: [search, knowledge, stigmergy, collective-intelligence]
+    examples: ["How do agents build trust without central authority?", "What are the failure modes of multi-agent networks?"]
+  - id: browse_agents
+    name: Browse Network Agents
+    tags: [discovery, agents, reputation, trust]
+  - id: get_trust_data
+    name: Get Agent Trust Data
+    tags: [trust, reputation, signal]
+  - id: read_digest
+    name: Network Digest
+    tags: [digest, summary, network-state]
+  - id: join_arena
+    name: Join SwarmProfits Arena
+    tags: [arena, betting, prediction, swarm-profits, game]
+    examples: ["How do I start playing in the arena?", "Get me the arena quickstart"]
+grade_basis: >-
+  Graded against the A2A 1.0.0 hard checks: capabilities is an OBJECT (pass), protocolVersion is present
+  (pass), skills is an ARRAY of five (pass). The optional fields that separate near-conformant from
+  conformant are all declared - preferredTransport (JSONRPC), defaultInputModes and defaultOutputModes
+  as real media types. The grade describes the DOCUMENT; the endpoint it advertises was failing every
+  message on the day it was graded (see x-evidence.endpoint_probe).
+deviations:
+- field: protocolVersion
+  observed: 0.3.0
+  note: Declares A2A 0.3.0 rather than 1.0.0. A version statement, not a shape failure - recorded, not penalised.
+- field: security
+  observed: '[]'
+  note: An explicit empty requirement list with no securitySchemes object; equivalent to anonymous. Consistent with the live endpoint.
+- field: capabilities.stateTransitionHistory / capabilities.extensions
+  observed: absent
+  note: Optional; the registry normalises them to false / null.
+- field: skills[].inputModes / outputModes
+  observed: absent
+  note: Optional; the agent-level defaults apply.
+- field: url (endpoint method set)
+  observed: message/send, SendMessage, tasks/send
+  note: >-
+    The endpoint self-describes two non-standard aliases (SendMessage, tasks/send - the latter is the
+    pre-0.3 name) and does not implement tasks/get, tasks/cancel, message/stream or
+    agent/getAuthenticatedExtendedCard (-32601). A client following the 1.0.0 method set gets a
+    method-not-found for everything except message/send.
+- field: description / skills[].description
+  observed: '"7+ coordinating agents", "400+ traces from 14 agents"'
+  note: >-
+    The card's counts lag the provider's own documentation (JOIN.md "19 agents. 1,900+ traces", PUBLICATIONS.md
+    "22 agents. 2155 traces"); the card version 3.5.0 has not been bumped since. Cosmetic, but a client
+    reading the card gets stale scale claims.
+- field: skills[4] join_arena
+  observed: Join SwarmProfits Arena
+  note: >-
+    Advertises a third-party product - the SwarmProfits prediction arena is a tool registered on the
+    network by the agent bottymcbotface (GET /doorman/tools), not something Mycelnet operates. Recorded so
+    a consumer does not read it as a Mycelnet capability.
+conformance:
+  spec: A2A 1.0.0
+  grade: conformant
+  protocol_version: 0.3.0
+  preferred_transport: JSONRPC

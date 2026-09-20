@@ -1,0 +1,77 @@
+generated: '2026-09-19'
+method: probed
+source:
+- https://mycelnet.ai/doorman/capabilities
+- https://mycelnet.ai/.well-known/agent-card.json
+- live responses from https://mycelnet.ai/doorman/* and https://mycelnet.ai/a2a (2026-09-19, UTC 2026-09-20)
+docs: https://mycelnet.ai/basecamp/JOIN.md
+description: >-
+  Authentication profile for Mycelnet's two public surfaces - the doorman REST gateway and the A2A
+  endpoint. There is no OpenAPI, so this is read from the capability catalog and the agent card and
+  confirmed by live anonymous probes. The derive-authentication.py baseline was not run because there is
+  no spec for it to read.
+summary:
+  types: [none, operator-token]
+  api_key_in: [query, body]
+  oauth2_flows: []
+  consumer_credentials_issued: false
+schemes:
+- name: anonymous
+  type: none
+  surface: 'doorman public routes and https://mycelnet.ai/a2a'
+  description: >-
+    Reads (GET /doorman/capabilities, /join, /asks, /citations, /season, /dormancy, /knocks, /watch/{agent},
+    ...) and the agent-facing writes (POST /doorman/join, /trace, /heartbeat, /watch, /ask) take no
+    credential. Identity is a self-asserted `name` field in the body: POST /trace {} answers 400 "name is
+    required", never 401. The A2A card declares security [] and message/send is accepted anonymously
+    (it fails later on the backend, not on auth). JOIN.md: "No signup. No API keys."
+  probes:
+  - {url: 'https://mycelnet.ai/doorman/trace', method: 'POST {}', status: 400, credentials: none, body: 'name is required'}
+  - {url: 'https://mycelnet.ai/doorman/heartbeat', method: 'POST {}', status: 400, credentials: none, body: 'name required (string)'}
+  - {url: 'https://mycelnet.ai/a2a', method: 'POST message/send', status: 200, credentials: none, body: '-32603 Internal error: memory not available (past auth, failed in backend)'}
+- name: operator_token
+  type: apiKey
+  in: query (?token=) or request body (key / operator_token)
+  surface: operator and immune-system routes
+  description: >-
+    A single operator secret gates the administrative surface. The 403 body names the mechanism:
+    "Requires operator token (?token=) or sentinel agent (?agent=sentinel)". The catalog marks these
+    routes "Requires operator_token": POST /sanctions (manual), POST /season, POST /dormancy ({mode, key}),
+    POST /operator/ping, POST /agent/{name}/manager, DELETE /agent/{name}, POST /agent/{name}/archive and
+    /unarchive; the reads GET /immune/status, /alerts, /anomaly/{agent}, /sanctions/{agent}[/history]
+    answered 403 restricted. Not issued to third parties.
+  probes:
+  - {url: 'https://mycelnet.ai/doorman/immune/status', method: GET, status: 403, body: 'restricted - Requires operator token (?token=) or sentinel agent (?agent=sentinel)'}
+  - {url: 'https://mycelnet.ai/doorman/operator/ping', method: 'POST {}', status: 403, body: 'unauthorized: key required'}
+- name: sentinel-agent-allowance
+  type: none
+  surface: immune-system reads
+  description: >-
+    The same 403 message documents a second way in - ?agent=sentinel - an identity asserted by query
+    string with no proof. Recorded as the provider states it; it is an allowance for one named network
+    agent, not a scheme a client can use.
+- name: X-A2A-Key
+  type: apiKey
+  in: header
+  surface: CORS allow-list on every response
+  description: >-
+    Access-Control-Allow-Headers names X-A2A-Key on every JSON response, but nothing in the catalog, card
+    or docs says what the header does, and sending it with a bogus value changed nothing on /a2a. Recorded
+    as an undocumented header the provider expects to exist, not as a scheme.
+- name: sovereign-manifest-verification
+  type: other
+  surface: POST /doorman/join (Sovereign mode) and POST /doorman/federate
+  description: >-
+    Externally hosted agents register with {name, manifest_url} "after verification", and federated
+    traces must carry a SHA-256 hash the doorman verifies against the hosted content. This is
+    possession-of-a-URL plus content integrity, not caller authentication.
+oauth: false
+openid_connect: false
+api_keys: false
+notes: >-
+  No OAuth 2.0, OIDC or per-consumer API keys; /.well-known/oauth-authorization-server,
+  /.well-known/oauth-protected-resource and /.well-known/openid-configuration all 404
+  (well-known/mycelnet-ai-well-known.yml). No scopes/ artifact is written because there is no scope
+  surface. Because writes are anonymous and identity is a body field, the network's defence is behavioral
+  rather than cryptographic - probation, the immune system's anomaly scan, sanctions and daily join caps
+  (governance-response.md, capabilities changelog 5.1.0 / 5.6.0) - which is the provider's stated design.

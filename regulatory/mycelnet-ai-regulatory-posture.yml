@@ -1,0 +1,72 @@
+generated: '2026-09-19'
+method: searched
+probe: true
+source: https://mycelnet.ai/
+signals: {}
+note: >-
+  No horizontal regulatory signal is published. mycelnet.ai is a GitHub Pages site with one landing page
+  and a set of markdown documents for agents; there is no legal, privacy, terms, accessibility, security
+  or trust page anywhere on the host (every conventional path below returns the GitHub Pages 404), no
+  docs host, and the a2aregistry.org listing records license, contact and homepage as null. The only
+  regulation-adjacent statements are in the agent-facing docs - that everything published is public and
+  permanent, that trace content is untrusted input, and that the operator provides no compute - none of
+  which is a conformance report, subprocessor table, DPA, residency statement or SBOM. An empty signals
+  map is the measurement, not a gap in the probe. Nothing is inferred about which regimes reach the
+  provider; that is decided by the regime map, not here.
+probed_absent:
+- signal: sbom
+  urls:
+  - {url: 'https://mycelnet.ai/security/sbom', status: 404}
+  - {url: 'https://mycelnet.ai/security', status: 404}
+  note: Never derived - search only. The public GitHub organisation (mycelnetwork) publishes no SBOM either, and the doorman Worker's source is not public.
+- signal: accessibility_conformance
+  urls:
+  - {url: 'https://mycelnet.ai/accessibility', status: 404}
+  - {url: 'https://mycelnet.ai/accessibility/vpat', status: 404}
+- signal: subprocessors
+  urls:
+  - {url: 'https://mycelnet.ai/legal/subprocessors', status: 404}
+  - {url: 'https://mycelnet.ai/legal', status: 404}
+  note: The infrastructure is observable (GitHub Pages, Cloudflare Workers/KV/Vectorize per the changelog, GitHub as the trace store) but the provider publishes no subprocessor list, and an inferred vendor list is not a published one.
+- signal: data_subject_request
+  urls:
+  - {url: 'https://mycelnet.ai/privacy', status: 404}
+  - {url: 'https://mycelnet.ai/privacy/requests', status: 404}
+  - {url: 'https://mycelnet.ai/privacy-policy', status: 404}
+  - {url: 'https://mycelnet.ai/legal/dpa', status: 404}
+  note: 'DELETE /agent/{name} exists but is operator-only and is an administrative route, not a documented data-subject channel.'
+- signal: data_residency
+  urls:
+  - {url: 'https://mycelnet.ai/docs/data-residency', status: 404}
+- signal: incident_notification
+  urls:
+  - {url: 'https://mycelnet.ai/legal/dpa', status: 404}
+- signal: ai_transparency
+  urls:
+  - {url: 'https://mycelnet.ai/ai/transparency', status: 404}
+  note: The network is explicitly composed of AI agents and says so on every page, but publishes no Art. 50-style disclosure document; being obviously AI is not a transparency artifact.
+- signal: training_data_summary
+  urls:
+  - {url: 'https://mycelnet.ai/ai/transparency', status: 404}
+- signal: transparency_report
+  urls:
+  - {url: 'https://mycelnet.ai/transparency', status: 404}
+- signal: notice_and_action
+  urls:
+  - {url: 'https://mycelnet.ai/legal/report-content', status: 404}
+  note: 'governance-response.md documents an internal appeal path for sanctioned AGENTS, not a notice-and-action channel for third parties.'
+- signal: global_privacy_control
+  urls:
+  - {url: 'https://mycelnet.ai/privacy', status: 404}
+  note: No privacy statement exists; honored is not set from a header probe.
+- signal: support_lifetime
+  urls:
+  - {url: 'https://mycelnet.ai/terms', status: 404}
+  - {url: 'https://mycelnet.ai/terms-of-service', status: 404}
+- signal: exit_assistance
+  urls:
+  - {url: 'https://mycelnet.ai/terms', status: 404}
+  note: Traces are published as plain markdown at stable URLs under /basecamp/agents-hosted/ and manifests carry hashes, which makes an agent's record trivially portable in practice - but no export or switching commitment is stated, so nothing is recorded.
+- signal: age_assurance
+  urls:
+  - {url: 'https://mycelnet.ai/terms', status: 404}

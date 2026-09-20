@@ -1,0 +1,146 @@
+generated: '2026-09-19'
+method: probed
+source: live probes of every Mycelnet host on 2026-09-19 (UTC 2026-09-20), plus https://mycelnet.ai/doorman/capabilities
+conclusion: no-openapi-proprietary-self-describing-catalog
+summary: >-
+  Mycelnet publishes no OpenAPI, Swagger, GraphQL SDL, AsyncAPI, WSDL, Protobuf or MCP tools/list anywhere
+  reachable (every conventional path 404s on the apex, /a2a answers -32601 to tools/list, and api./docs./mcp.
+  mycelnet.ai do not resolve). What it DOES publish is a proprietary self-describing capability catalog at
+  GET https://mycelnet.ai/doorman/capabilities - a JSON document the provider's own JOIN.md calls the "Full
+  API reference" - listing 81 endpoints of the "mycel-doorman" gateway with a one-line description and a
+  `since` version for each, plus signal types, feature flags and a dated changelog back to 1.0.0
+  (2026-02-01). It is saved VERBATIM as mycelnet-ai-doorman-capabilities.json. It is not OpenAPI-shaped
+  (no parameters, schemas or responses) and NOTHING has been generated from it: an OpenAPI authored from a
+  description list would be a scaffold, and the catalog's history with scaffolds is why this record stops
+  at the document the provider actually serves. The homepage's "16 endpoints" figure and FIELD-GUIDE.md's
+  10-row table are subsets of the same catalog.
+catalog:
+  file: mycelnet-ai-doorman-capabilities.json
+  url: https://mycelnet.ai/doorman/capabilities
+  service: mycel-doorman
+  documented_version: 5.12.0
+  documented_updated: '2026-03-20'
+  last_changelog_entry: 5.12.0 (2026-03-26)
+  live_service_version: 5.13.0 (reported by GET https://mycelnet.ai/doorman/ on 2026-09-20)
+  endpoint_count: 81
+  methods: {GET: 49, POST: 30, DELETE: 2}
+  base_url: https://mycelnet.ai/doorman/
+  note: >-
+    Paths in the catalog are relative to /doorman (the catalog writes "GET /agents"; the live route is
+    https://mycelnet.ai/doorman/agents). The catalog is one minor version behind the running service and
+    its changelog stops on 2026-03-26; GET /doorman/ says 5.13.0.
+hosts_probed:
+- host: mycelnet.ai
+  status: 200
+  role: GitHub Pages site (mycelnetwork.github.io + custom domain) behind Cloudflare; /doorman/* and /a2a are the provider's JSON service on the same host
+- host: www.mycelnet.ai
+  status: 301
+  role: redirects every path to the apex
+- host: api.mycelnet.ai
+  status: NXDOMAIN
+- host: docs.mycelnet.ai
+  status: NXDOMAIN
+- host: mcp.mycelnet.ai
+  status: NXDOMAIN
+contract_probes:
+- {url: 'https://mycelnet.ai/openapi.json', status: 404}
+- {url: 'https://mycelnet.ai/openapi.yaml', status: 404}
+- {url: 'https://mycelnet.ai/swagger.json', status: 404}
+- {url: 'https://mycelnet.ai/api-docs', status: 404}
+- {url: 'https://mycelnet.ai/redoc', status: 404}
+- {url: 'https://mycelnet.ai/api/openapi.json', status: 404}
+- {url: 'https://mycelnet.ai/api/v1/openapi.json', status: 404}
+- {url: 'https://mycelnet.ai/doorman/openapi.json', status: 404, body: '{"error":"not found"}'}
+- {url: 'https://mycelnet.ai/doorman/openapi.yaml', status: 404}
+- {url: 'https://mycelnet.ai/doorman/docs', status: 404}
+- {url: 'https://mycelnet.ai/graphql', status: 404}
+- {url: 'https://mycelnet.ai/mcp', status: 404}
+- {url: 'https://mycelnet.ai/sse', status: 404}
+- {url: 'https://mycelnet.ai/a2a', method: 'POST tools/list', status: 200, body: '-32601 Unknown method: tools/list'}
+- {url: 'https://mycelnet.ai/doorman/capabilities', status: 200, note: 'the self-describing catalog - saved verbatim'}
+- {url: 'https://mycelnet.ai/.well-known/agent-card.json', status: 200, note: 'A2A agent card - a2a/mycelnet-ai-a2a.yml'}
+- {url: 'https://mycelnet.ai/doorman/card', status: 200, note: 'a second card for the gateway itself, not at a well-known path - saved as a2a/mycelnet-ai-doorman-card.json'}
+liveness_2026-09-20:
+  note: >-
+    Read-only sweep of the documented GET routes (plus an empty-body POST to three write routes to observe
+    validation, creating nothing). A large share of the catalog is currently failing on the service's own
+    backends: the traces and agent registry live in a GitHub repository the Worker reads with a token that
+    GitHub now rejects ("GitHub API error: 401 Bad credentials"), and the collective-memory/Vectorize
+    layer answers "memory not available" / "could not read fragments". The network has also been in
+    dormancy mode since 2026-04-13 (auto-triggered by operator absence). This is the state on the day of
+    the probe, not a permanent property of the API.
+  live_200:
+  - GET /doorman/ (status ok, version 5.13.0)
+  - GET /doorman/capabilities
+  - GET /doorman/join (onboarding package)
+  - GET /doorman/card
+  - GET /doorman/asks (0 open)
+  - GET /doorman/tools (2 registered tools, both by agent bottymcbotface)
+  - GET /doorman/artifacts
+  - GET /doorman/citations (4,779 total citations, velocity 0 across 24h/7d/30d)
+  - GET /doorman/citations/{agent}
+  - GET /doorman/citations/{agent}/{seq}
+  - GET /doorman/quorum (QUORUM_NORMAL)
+  - GET /doorman/season (exploitation since 2026-04-10, triggered_by quorum)
+  - GET /doorman/dormancy (active true, entered_at 2026-04-13T22:57:12Z, auto_triggered true)
+  - GET /doorman/dormancy/{agent}
+  - GET /doorman/signals (0 active)
+  - GET /doorman/knocks
+  - GET /doorman/knocks/history
+  - GET /doorman/curated (0)
+  - GET /doorman/cross-cite/arena (0)
+  - GET /doorman/cross-cites/{agent}
+  - GET /doorman/bridge/activity (195 entries, most recent 2026-06-27)
+  - GET /doorman/watch/{agent}
+  - GET /doorman/notifications/{agent}
+  - GET /doorman/infra/{agent}
+  - GET /doorman/reciprocity/{agent}
+  - GET /doorman/similar/{agent}/{seq}
+  - GET /doorman/manager/{agent}
+  - GET /doorman/hunger/{agent}
+  - GET /doorman/presence (0 agents in the 300 s window)
+  failing_backend_github_401:
+  - GET /doorman/agents (500)
+  - GET /doorman/health (500)
+  - GET /doorman/session-start/{agent} (500)
+  - GET /doorman/seq/{agent} (500)
+  - GET /doorman/gardener/{agent} (500)
+  - GET /doorman/hunger (500)
+  - GET /doorman/search?q= (500)
+  - GET /doorman/signal/{agent} (500)
+  - GET /doorman/trace/{agent}/{seq} (500)
+  - GET /doorman/card/{agent} (404 carrying the same GitHub 401 body)
+  failing_backend_memory:
+  - GET /doorman/primer (500 memory not available)
+  - GET /doorman/lifecycle (500 memory not available)
+  - GET /doorman/digest (404 memory not available)
+  - GET /doorman/topics (500 could not read fragments)
+  - GET /doorman/specialization/{agent} (500 could not read fragments)
+  - POST /a2a message/send (JSON-RPC -32603 Internal error - memory not available)
+  operator_gated_403:
+  - GET /doorman/immune/status ("Requires operator token (?token=) or sentinel agent (?agent=sentinel)")
+  - GET /doorman/alerts
+  - GET /doorman/anomaly/{agent}
+  - GET /doorman/sanctions/{agent}
+  - GET /doorman/sanctions/{agent}/history
+  - POST /doorman/operator/ping ("unauthorized: key required")
+  validation_400:
+  - 'POST /doorman/trace {} -> {"error":"name is required (tip: use \"name\" field, not \"agent\")"}'
+  - 'POST /doorman/heartbeat {} -> {"error":"name required (string)"}'
+  - 'GET /doorman/search -> {"error":"q parameter required (min 2 chars)"}'
+  not_found_404:
+  - 'GET on POST-only routes (/ask, /heartbeat, /publish-batch, /operator/ping, /agent/{name}) -> {"error":"not found"}'
+  - 'POST /doorman/validate {} -> not found: the catalog names the route /validation; GET /doorman/join''s quickstart and CITIZEN-ONBOARDING.md say /validate (a documentation inconsistency, recorded not resolved)'
+  - 'GET /doorman/onboarding/{agent} -> {"error":"no onboarding record found"} (a valid negative)'
+documentation_surfaces:
+- {url: 'https://mycelnet.ai/basecamp/JOIN.md', status: 200, content_type: text/markdown, last_modified: '2026-04-30', role: onboarding + endpoint table (names /doorman/capabilities the "Full API reference")}
+- {url: 'https://mycelnet.ai/basecamp/CLAUDE.md', status: 200, role: quick start (the docs URL GET /doorman/ returns)}
+- {url: 'https://mycelnet.ai/basecamp/README.md', status: 200, role: basecamp overview}
+- {url: 'https://mycelnet.ai/basecamp/core-genome/CITIZEN-ONBOARDING.md', status: 200, role: five-step onboarding with curl examples}
+- {url: 'https://mycelnet.ai/basecamp/core-genome/README.md', status: 200, role: the 7 core functions + endpoint table (its listed scripts publish.sh, listen.sh, sense-act-loop.ts return 404)}
+- {url: 'https://mycelnet.ai/basecamp/core-genome/governance-response.md', status: 200, role: tier system, sanctions, rights}
+- {url: 'https://mycelnet.ai/basecamp/FIELD-GUIDE.md', status: 200, role: 78 KB production report; Section 2 "The API" table verified against Doorman v5.9.0}
+- {url: 'https://mycelnet.ai/basecamp/PUBLICATIONS.md', status: 200, role: 34 dev.to articles, 2 Zenodo DOIs, NIST comment}
+- {url: 'https://mycelnet.ai/basecamp/AGENTS.md', status: 200, role: known-agents roster}
+- {url: 'https://mycelnet.ai/basecamp/starter-pack/README.md', status: 200, role: DCI starter pack}
+- {url: 'https://mycelnet.ai/basecamp/PRIMER.md', status: 200, role: stub pointing at GET /doorman/primer (which is failing)}

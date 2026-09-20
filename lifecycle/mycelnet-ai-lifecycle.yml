@@ -1,0 +1,97 @@
+generated: '2026-09-19'
+method: probed
+source:
+- https://mycelnet.ai/doorman/capabilities
+- https://mycelnet.ai/doorman/
+- https://mycelnet.ai/doorman/dormancy
+- https://mycelnet.ai/doorman/season
+- https://mycelnet.ai/doorman/bridge/activity
+- https://a2aregistry.org/api/agents?search=mycelnet
+- https://mycelnet.ai/basecamp/PUBLICATIONS.md
+versioning:
+  scheme: semver on the gateway service; per-endpoint `since` version in the capability catalog; no version in the URL
+  current: 5.13.0 (GET /doorman/ on 2026-09-20)
+  catalog_version: 5.12.0 (GET /doorman/capabilities, updated 2026-03-20, last changelog entry 2026-03-26)
+  agent_card_version: 3.5.0
+  protocol_version: A2A 0.3.0
+  docs: https://mycelnet.ai/doorman/capabilities
+  detail: >-
+    The catalog stamps every endpoint with the release that added it (since 1.0.0 ... 5.11.0) and carries
+    the changelog inline (changelog/mycelnet-ai-changelog.yml). Routes are unversioned
+    (https://mycelnet.ai/doorman/<route>), so a breaking change would land in place; none is marked as
+    such in the changelog, and the FIELD-GUIDE table says its API details were "verified against Doorman
+    v5.9.0". The running service (5.13.0) is one minor ahead of the published catalog.
+maturity:
+  stated: none
+  observed: >-
+    A single-operator research network (Mark Skaggs, registered on the network as "gardener") whose
+    gateway went from 1.0.0 on 2026-02-01 to 5.12.0 on 2026-03-26 - 56 dated releases in eight weeks -
+    and then stopped. Since April the public record shows dormancy: the network entered dormancy mode
+    on 2026-04-13 (auto-triggered by the documented 48 h operator-absence rule) and is still in it;
+    citation velocity is 0 over 24 h / 7 d / 30 d; the last logged A2A skill call is 2026-06-27; the
+    trace store behind the API is unreadable because the Worker's GitHub token is rejected. The host,
+    card, catalog and 29 read routes stay up.
+timeline:
+- date: '2026-02-01'
+  event: Doorman 1.0.0 - GET /, GET /agents, POST /join, POST /trace, POST /ask, GET /card; gardener (the operator's agent) and abernath37/axon37 (on hive37.ai) join.
+  source: https://mycelnet.ai/doorman/capabilities
+- date: '2026-02-27'
+  event: 2.0.0 - digest, session-start, citation scanning and decay-weighted /ask; 2.1.0 adds GET /capabilities; 3.0.0 adds Vectorize embeddings.
+  source: https://mycelnet.ai/doorman/capabilities
+- date: '2026-03-02'
+  event: 4.0.0 - citations, quorum, topics, hunger, heartbeat and presence in one day of releases (4.0.0 through 4.11.0 by 2026-03-03).
+  source: https://mycelnet.ai/doorman/capabilities
+- date: '2026-03-13'
+  event: 5.0.0; 5.1.0 (2026-03-14) ships the Tier 2 immune system (alerts, anomaly scan, sanctions); 5.3.0 adds watches; 5.4.0 federation; 5.8.0 (2026-03-18) webhook push on watches.
+  source: https://mycelnet.ai/doorman/capabilities
+- date: '2026-03-23'
+  event: Agent card registered on a2aregistry.org (id f9af9482-62d5-4417-9b11-2ad27e85367e). Field Guide v2 published the same day.
+  source: https://a2aregistry.org/api/agents?search=mycelnet
+- date: '2026-03-26'
+  event: 5.12.0 - the last changelog entry (operator presence ping, modular refactor into 14 modules, probation KV fix).
+  source: https://mycelnet.ai/doorman/capabilities
+- date: '2026-04-06'
+  event: 'Zenodo report "Multi-Agent Coordination Without Hierarchy" (DOI 10.5281/zenodo.19438081), authors czero, newagent2, learner, sentinel, Mark Skaggs.'
+  source: https://zenodo.org/records/19438081
+- date: '2026-04-10'
+  event: Network season auto-flipped back to exploitation (triggered_by quorum) - the last recorded season change. 34 dev.to articles published 2026-03-26 to 2026-04-10.
+  source: https://mycelnet.ai/doorman/season
+- date: '2026-04-11'
+  event: PUBLICATIONS.md last auto-synced.
+  source: https://mycelnet.ai/basecamp/PUBLICATIONS.md
+- date: '2026-04-13'
+  event: Network dormancy mode entered (auto_triggered true, entered_at 2026-04-13T22:57:12Z); still active on 2026-09-20.
+  source: https://mycelnet.ai/doorman/dormancy
+- date: '2026-04-30'
+  event: JOIN.md last modified (Last-Modified header).
+  source: https://mycelnet.ai/basecamp/JOIN.md
+- date: '2026-06-27'
+  event: Most recent entry in the provider's A2A bridge activity log (search_traces, response_status error).
+  source: https://mycelnet.ai/doorman/bridge/activity
+- date: '2026-09-20'
+  event: 'a2aregistry.org health check: is_healthy true, uptime 97.96%, avg 1,967 ms; task_conformance INTERNAL failed; maintainer note "returns an A2A InternalError when handling message/send".'
+  source: https://a2aregistry.org/api/agents?search=mycelnet
+- date: '2026-09-20'
+  event: 'API Evangelist probe: card 200 and conformant; message/send -32603 memory not available; 10 doorman routes 500 on a rejected GitHub token; 29 read routes live (discovery/mycelnet-ai-contract-discovery.yml).'
+  source: a2a/mycelnet-ai-a2a.yml
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  detail: >-
+    No deprecation policy and no RFC 8594 Sunset/Deprecation headers. The catalog records when endpoints
+    were added (`since`) but has no removed/deprecated marker; two one-time migration endpoints
+    (POST /backfill-embeddings since 3.0.0, POST /lifecycle/classify-untyped since 4.7.0) remain listed.
+    No Deprecation pointer is emitted.
+sla:
+  url: null
+  public_uptime_target: null
+  notes: >-
+    No SLA. GET /doorman/health is documented as the consolidated health endpoint (cached 5 min) but
+    returns 500 on the rejected GitHub token; GET /doorman/ answers {"status":"ok"} regardless. The only
+    availability record is a2aregistry.org's third-party health check. No StatusPage pointer is emitted.
+status_page: null
+dormancy:
+  documented_rule: 'POST/GET /dormancy (since 5.9.0): network dormancy pauses registration and increases immune sensitivity; auto-enter after 48 h of operator absence; per-agent dormancy after 7 dormant days (dormant_days_limit 7).'
+  observed: active since 2026-04-13T22:57:12Z, auto_triggered true, exited_at null
+deprecated_operations: []

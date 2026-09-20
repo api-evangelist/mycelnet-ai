@@ -1,0 +1,16 @@
+generated: '2026-09-19'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: mycelnet.ai
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov 20 05:16:19 2026 GMT
+  hsts: false
+domains:
+- domain: mycelnet.ai
+  dnssec: false
+  caa: []
+  spf: false
+  dmarc: true
+  dmarc_policy: quarantine

@@ -1,0 +1,69 @@
+generated: '2026-09-19'
+method: probed
+source: live GET of the named /.well-known/ path list on every host this record knows
+hit_count: 0
+note: >-
+  Every named discovery path returned 404 on mycelnet.ai. The 404 body is the GitHub Pages "Page not
+  found" HTML (9,379 bytes, title "Page not found · GitHub Pages") carrying a real 404 status - the apex is
+  a GitHub Pages site (mycelnetwork.github.io with the custom domain attached) fronted by Cloudflare, and
+  only the /a2a and /doorman/* routes are answered by the provider's own JSON service. The negative-control
+  path returned the same 404, so these are true absences and not a path-echoing or SPA catch-all.
+  www.mycelnet.ai answers 301 to the apex for every path and so serves nothing of its own. No WellKnown or
+  SecurityTxt pointer is emitted - this file records an absence. The one /.well-known/ document the host
+  DOES serve is the A2A agent card (/.well-known/agent-card.json and the byte-identical legacy
+  /.well-known/agent.json, both 200 application/json); it is recorded and graded in a2a/mycelnet-ai-a2a.yml
+  rather than counted here. There is no MCP host, no separate API or docs host (api., docs. and mcp.
+  mycelnet.ai have no DNS record), and no authorization_servers named anywhere, so the host set is the
+  apex and www.
+hosts:
+- host: https://mycelnet.ai
+  path_echo_control: passed
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/oauth-protected-resource, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/api-catalog.json, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/ucp.json, status: 404}
+  - {path: /.well-known/acp.json, status: 404}
+  - {path: /.well-known/aauth-resource.json, status: 404}
+  - {path: /.well-known/apis.json, status: 404}
+  - {path: /.well-known/mcp.json, status: 404}
+  - {path: /apis.json, status: 404}
+  - {path: /apis.yml, status: 404}
+  - {path: /llms.txt, status: 404}
+  - {path: /openapi.json, status: 404}
+  - {path: /openapi.yaml, status: 404}
+  - {path: /swagger.json, status: 404}
+  - {path: /api-docs, status: 404}
+  - {path: /docs, status: 301, note: 'redirects to /docs/, which returns 404'}
+  - {path: /mcp, status: 404}
+  - {path: /graphql, status: 404}
+  - {path: /sitemap.xml, status: 404}
+  - {path: /robots.txt, status: 404}
+  - {path: /security.txt, status: 404}
+  - {path: /humans.txt, status: 404}
+  - {path: /.well-known/agent-card.json, status: 200, note: 'A2A agent card, application/json, 2861 bytes - recorded and graded in a2a/mycelnet-ai-a2a.yml, not counted as a well-known hit here'}
+  - {path: /.well-known/agent.json, status: 200, note: 'legacy A2A path, byte-identical to agent-card.json'}
+  - {path: /.well-known/mycelnet-negative-control-9f3a1c.json, status: 404, note: negative control}
+- host: https://www.mycelnet.ai
+  path_echo_control: not applicable (every path 301s to the apex)
+  documents:
+  - {path: /, status: 301, note: 'Location: https://mycelnet.ai/'}
+  - {path: /.well-known/security.txt, status: 301}
+  - {path: /.well-known/openid-configuration, status: 301}
+  - {path: /.well-known/agent-card.json, status: 301}
+  - {path: /apis.json, status: 301}
+  - {path: /llms.txt, status: 301}
+- host: https://api.mycelnet.ai
+  dns: none
+  note: No A/AAAA/CNAME record; every request fails to resolve.
+  documents: []
+- host: https://docs.mycelnet.ai
+  dns: none
+  documents: []
+- host: https://mcp.mycelnet.ai
+  dns: none
+  documents: []
