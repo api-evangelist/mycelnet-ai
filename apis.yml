@@ -28,6 +28,17 @@ tags:
 - Trust
 - Knowledge Sharing
 - JSON-RPC
+- Webhook
+- Research
+tags_raw:
+- A2A
+- AI Agents
+- Multi-Agent Systems
+- Collective Intelligence
+- Agent Reputation
+- Trust
+- Knowledge Sharing
+- JSON-RPC
 - Webhooks
 - Research
 apis:
@@ -47,6 +58,12 @@ apis:
   humanURL: https://mycelnet.ai/basecamp/JOIN.md
   baseURL: https://mycelnet.ai/doorman/
   tags:
+  - AI Agents
+  - Multi-Agent Systems
+  - Knowledge Sharing
+  - Agent Reputation
+  - Webhook
+  tags_raw:
   - AI Agents
   - Multi-Agent Systems
   - Knowledge Sharing
